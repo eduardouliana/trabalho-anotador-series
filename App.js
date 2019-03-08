@@ -1,5 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, TouchableOpacity, Picker } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Picker,
+  Keyboard
+} from 'react-native';
+import { RadioButton } from 'react-native-paper';
+
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -52,7 +64,9 @@ export default class App extends React.Component {
       state.listaItens.push({ nome: state.nomeSerie, categoria: this.state.categoriaSerie });
       state.nomeSerie = '';
       this.setState(state)
+      Keyboard.dismiss(); //Fechar teclado depois de salvar
       alert('Cadastrado com sucesso');
+
     } else {
       alert('Informe um nome');
     }
@@ -65,14 +79,23 @@ export default class App extends React.Component {
         </View>
 
         <View style={styles.cadastrarView}>
-          <Picker
-            style={styles.categoriaCombo}
-            selectedValue={this.state.categoriaSerie}
-            onValueChange={(itemValue, itemIndex) => this.setState({ categoriaSerie: itemValue })}>
-            <Picker.Item label='Filme' value='Filme' />
-            <Picker.Item label='Série' value='Série' />
-          </Picker>
-
+          <View style={styles.itemRadioButton}>
+            <View style={styles.itemRadioButton}>
+              <RadioButton value={this.state.categoriaSerie}
+                color="green"
+                status={this.state.categoriaSerie === 'Filme' ? 'checked' : 'unchecked'}
+                onPress={(categoriaSerie) => { this.setState({ categoriaSerie: 'Filme' }); }}></RadioButton>
+              <Text>Filme</Text>
+            </View>
+            <View style={styles.itemRadioButton}>
+              <RadioButton value={this.state.categoriaSerie}
+                color="red"
+                status={this.state.categoriaSerie === 'Série' ? 'checked' : 'unchecked'}
+                onPress={(categoriaSerie) => { this.setState({ categoriaSerie: 'Série' }); }}>
+              </RadioButton>
+              <Text>Série</Text>
+            </View>
+          </View>
           <TextInput
             style={styles.textoInput}
             keyboardType='default'
@@ -101,11 +124,11 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   principalView: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: 'lightgray'
   },
 
   cabecalhoView: {
-    backgroundColor: 'red',
+    backgroundColor: 'gray',
     height: 70,
     justifyContent: 'center',
     alignItems: 'center',
@@ -114,12 +137,12 @@ const styles = StyleSheet.create({
 
   corpoView: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: 'lightgray'
   },
 
   rodapeView: {
     height: 40,
-    backgroundColor: 'green',
+    backgroundColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5
@@ -145,12 +168,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     justifyContent: 'center',
-    backgroundColor: '#90EE90',
     flexGrow: 1,
     margin: 2,
     width: 280,
     height: 55,
-    borderRadius: 10
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'lightgray'
   },
 
   itemListaCategoriaTexto: {
@@ -159,12 +183,12 @@ const styles = StyleSheet.create({
   },
 
   itemListaNomeTexto: {
-    fontSize: 20  ,
+    fontSize: 20,
     fontWeight: 'bold'
   },
 
   cadastrarView: {
-    backgroundColor: '#FAF0E6',
+    backgroundColor: 'lightgray',
     margin: 5,
     padding: 10,
     justifyContent: 'center',
@@ -190,15 +214,13 @@ const styles = StyleSheet.create({
   botaoCadastrar: {
     width: 150,
     alignItems: 'center',
-    backgroundColor: '#1C86EE',
+    backgroundColor: 'darkgrey',
     padding: 10,
-    borderColor: '#87CEFF',
     borderRadius: 15
   },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  itemRadioButton: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
